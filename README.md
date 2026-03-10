@@ -71,6 +71,46 @@ system before cloning or pulling updates:
 
 ---
 
+## Java Version Requirements
+
+| Server Version | Required JVM |
+|---|---|
+| 1.8.8 / 1.8.9 (legacy) | Java 17 minimum |
+| 1.20.6 / 1.21.x (modern) | Java 21 minimum |
+
+### Running PaperSpigot 1.8.8 on Java 17
+
+PaperSpigot 1.8.8 uses internal Java APIs that are restricted by Java 17's strong encapsulation.
+You **must** add the following flags to your server startup command (before `-jar`):
+
+```bash
+--add-opens java.base/java.lang=ALL-UNNAMED
+--add-opens java.base/java.lang.reflect=ALL-UNNAMED
+--add-opens java.base/java.io=ALL-UNNAMED
+--add-opens java.base/java.util=ALL-UNNAMED
+--add-opens java.base/java.util.concurrent=ALL-UNNAMED
+--add-opens java.base/java.net=ALL-UNNAMED
+```
+
+A complete startup script for a Java 17 PaperSpigot 1.8.8 server looks like:
+
+```bash
+java \
+  --add-opens java.base/java.lang=ALL-UNNAMED \
+  --add-opens java.base/java.lang.reflect=ALL-UNNAMED \
+  --add-opens java.base/java.io=ALL-UNNAMED \
+  --add-opens java.base/java.util=ALL-UNNAMED \
+  --add-opens java.base/java.util.concurrent=ALL-UNNAMED \
+  --add-opens java.base/java.net=ALL-UNNAMED \
+  -Xms1G -Xmx2G -jar paperspigot-1.8.8.jar nogui
+```
+
+> **Note:** Many pre-built Java-17-compatible PaperSpigot 1.8.8 distributions (such as
+> [AndyReckt/PaperSpigot](https://github.com/AndyReckt/PaperSpigot) or TrainCarts/TacoSpigot builds)
+> already include these flags in the bundled startup scripts. Check your server's `start.sh` / `start.bat`.
+
+---
+
 ## Building
 
 1. **Prerequisites:** Install JDK (Java 21 recommended for modern builds, _it is not gonna work on Java 25_) and Maven.
